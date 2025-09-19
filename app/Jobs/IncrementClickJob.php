@@ -3,27 +3,23 @@
 namespace App\Jobs;
 
 use App\Models\Url;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class IncrementClickJob implements ShouldQueue
 {
-    use Queueable;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     public $urlId;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct($urlId)
     {
         $this->urlId = $urlId;
     }
 
-    /**
-     * Execute the job.
-     */
-    public function handle(): void
+    public function handle()
     {
         Url::where('id', $this->urlId)->increment('clicks');
     }

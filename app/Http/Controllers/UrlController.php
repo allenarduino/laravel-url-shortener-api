@@ -45,7 +45,7 @@ class UrlController extends Controller
         if ($cached) {
             // dispatch click increment in background
             if (isset($cached['id'])) {
-                IncrementClickJob::dispatch($cached['id']);
+                dispatch(new IncrementClickJob($cached['id']));
             }
             return redirect()->away($cached['original_url']);
         }
@@ -63,7 +63,7 @@ class UrlController extends Controller
         ], now()->addMinutes(60));
 
         // increment clicks via queue
-        IncrementClickJob::dispatch($url->id);
+        dispatch(new IncrementClickJob($url->id));
 
         return redirect()->away($url->original_url);
     }
