@@ -8,6 +8,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// URL Shortening API Routes
-Route::post('/shorten', [UrlController::class, 'shorten']);
-Route::get('/{code}/stats', [UrlController::class, 'stats']);
+// URL Shortening API Routes with throttling (60 requests per minute)
+Route::middleware('throttle:60,1')->group(function () {
+    Route::post('/shorten', [UrlController::class, 'shorten']);
+    Route::get('/{code}/stats', [UrlController::class, 'stats']);
+});

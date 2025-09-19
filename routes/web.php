@@ -8,4 +8,4 @@ Route::get('/', function () {
 });
 
 // URL Redirect Route (must be last to catch all short codes)
-Route::get('/{code}', [UrlController::class, 'redirect']);
+Route::get('/{code}', [UrlController::class, 'redirect'])->where('code', '[A-Za-z0-9]+');
